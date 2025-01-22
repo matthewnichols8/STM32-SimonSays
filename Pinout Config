@@ -1,0 +1,13 @@
+Pinout Configuration:
+
+YELLOW BUTTON: PE6 (GPIO INPUT, NO PULLUP) ---> utilized a 1k Ohm resistor on breadboard
+YELLOW ONBOARD LED: PD13 (GPIO OUTPUT, NO PULLUP)
+
+GREEN BUTTON: PE5 (GPIO INPUT, NO PULLUP)  ---> utilized a 1k Ohm resistor on breadboard
+GREEN ONBOARD LED: PD12 (GPIO OUTPUT, NO PULLUP)
+
+RED BUTTON: PE4 (GPIO INPUT, NO PULLUP)    ---> utilized a 1k Ohm resistor on breadboard
+RED ONBOARD LED: PD14 (GPIO OUTPUT, NO PULLUP)
+
+BLUE BUTTON: PE2 (GPIO INPUT, NO PULLUP)   ---> utilized a 1k Ohm resistor on breadboard
+BLUE ONBOARD LED: PD15 (GPIO OUTPUT, NO PULLUP)
