@@ -84,7 +84,9 @@ void MX_USB_HOST_Process(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-// adds a number to Computer's array
+/* Adds a RNG number to Computer's array
+ *
+ */
 void addSequence(int *arrayPtr) {
 	if (sequenceNum < 10) {
 		uint32_t r;
@@ -94,7 +96,9 @@ void addSequence(int *arrayPtr) {
 	}
 }
 
-//displays computer's array on user LEDS
+/*displays computer's array on user LEDS
+ *
+ */
 void displaySequence(int *arrayPtr) {
 	for(int i = 0; i < sequenceNum; i++) {
 		if(*(arrayPtr + i) == 1) {
@@ -117,14 +121,16 @@ void displaySequence(int *arrayPtr) {
 			HAL_Delay(500);
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
 		}
-		HAL_Delay(100);
+		HAL_Delaßy(100);
 	}
 }
 
-// adds the input number from player to player's array
+/* Adds the input number from player to player's array
+ *
+ */
 void playerMove(int *playerPtr) {
 	for(int i = 0; i < sequenceNum; i++) {
-		while(1) {
+		while(1)
 			if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2) == GPIO_PIN_RESET) {
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
 				HAL_Delay(250);
@@ -157,7 +163,10 @@ void playerMove(int *playerPtr) {
 		HAL_Delay(350); //Small delay to reduce CPU usage
 	}
 }
- //checks player array and computer array
+
+/* Checks player array and computer array
+ *
+ */
 int checkPlayer(int *arrayPtr, int *playerPtr) {
 	for(int i = 0; i < sequenceNum; i++) {
 		if(arrayPtr[i] != playerPtr[i]) {
@@ -167,6 +176,9 @@ int checkPlayer(int *arrayPtr, int *playerPtr) {
 	return 1;
 }
 
+/*Displays the winning sequence --> All colors flashing
+ *
+ */
 void Win() {
 	for(int i = 0; i < 21; i++) {
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
@@ -191,6 +203,9 @@ void Win() {
 	}
 }
 
+/* Displays the Losing Sequence --> Red Flashing
+ *
+ */
 void Lose() {
 	for(int i = 0; i < 21; i++) {
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
