@@ -121,7 +121,7 @@ void displaySequence(int *arrayPtr) {
 			HAL_Delay(500);
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
 		}
-		HAL_Delaßy(100);
+		HAL_Delay(100);
 	}
 }
 
@@ -130,7 +130,7 @@ void displaySequence(int *arrayPtr) {
  */
 void playerMove(int *playerPtr) {
 	for(int i = 0; i < sequenceNum; i++) {
-		while(1)
+		while(1) {
 			if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2) == GPIO_PIN_RESET) {
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
 				HAL_Delay(250);
