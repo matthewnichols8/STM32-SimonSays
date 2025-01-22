@@ -13,6 +13,7 @@ Hello! This is my first STM32 project! In this project, I have created a **Simon
 - **HAL (Hardware Abstraction Layer) library**
 - External buttons connected to the GPIO pins
 - Set HCLCK to 168MHz to ensure smooth inputs
+- Utilize 1K Ohm reistors if GPIO pins are not in PULLUP mode
 
 ## Setup
 
