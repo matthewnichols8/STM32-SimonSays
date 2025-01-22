@@ -1,6 +1,6 @@
 # Simon Says Game on STM32 F4F407VG Discovery Board
 
-Hello! This is my first STM32 project! In this project, I have created a **Simon Says** game on the **STM32 F4F407VG Discovery Board** using the **HAL** library and external buttons.
+Hello! This is my first STM32 project! In this project, I have created a **Simon Says** game on the **STM32 F4F407VG Discovery Board** using the **HAL** library and external buttons. My YouTube video displaying this project is here: https://www.youtube.com/watch?v=smnk4EzpY4Y 
 
 ## Features
 - Implements the classic **Simon Says** game.
