@@ -84,7 +84,7 @@ void MX_USB_HOST_Process(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-/* Adds a RNG number to Computer's array
+/* Adds a RNG number to Computer's Array of Sequences
  *
  */
 void addSequence(int *arrayPtr) {
@@ -96,7 +96,7 @@ void addSequence(int *arrayPtr) {
 	}
 }
 
-/*displays computer's array on user LEDS
+/* Displays Computer's Array of Sequences to ONBOARD-LEDS
  *
  */
 void displaySequence(int *arrayPtr) {
@@ -125,7 +125,7 @@ void displaySequence(int *arrayPtr) {
 	}
 }
 
-/* Adds the input number from player to player's array
+/* Adds the input number from Player to Player's Array of Sequences
  *
  */
 void playerMove(int *playerPtr) {
@@ -164,7 +164,7 @@ void playerMove(int *playerPtr) {
 	}
 }
 
-/* Checks player array and computer array
+/* Checks Player Array and Computer Array have same values
  *
  */
 int checkPlayer(int *arrayPtr, int *playerPtr) {
