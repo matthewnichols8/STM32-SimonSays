@@ -63,7 +63,7 @@ int moves[10]; //the computer's array of numbers
 int playerMoves[10]; //the player's answer of numbers
 int *arrayPtr = moves; //pointer to computer's numbers
 int *playerPtr = playerMoves; //pointer to player's numbers
-int numOfSequences = 8;
+const int numOfSequences = 8;
 
 
 /* USER CODE END PV */
@@ -111,7 +111,7 @@ void displaySequence(int *arrayPtr) {
 			HAL_Delay(500);
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
 		}
-		else if(*(arrayPtr + i) == 2) {
+		else if(*(arrayPtr + i) == 3) {
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
 			HAL_Delay(500);
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
@@ -160,7 +160,7 @@ void playerMove(int *playerPtr) {
 				break;
 			}
 		}
-		HAL_Delay(350); //Small delay to reduce CPU usage
+		HAL_Delay(50); //Small delay to reduce CPU usage
 	}
 }
 
