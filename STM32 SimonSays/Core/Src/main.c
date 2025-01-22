@@ -24,8 +24,6 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <stdbool.h>
 #include <unistd.h>
 
 /* USER CODE END Includes */
@@ -65,7 +63,7 @@ int moves[10]; //the computer's array of numbers
 int playerMoves[10]; //the player's answer of numbers
 int *arrayPtr = moves; //pointer to computer's numbers
 int *playerPtr = playerMoves; //pointer to player's numbers
-int numOfSequences = 5;
+int numOfSequences = 8;
 
 
 /* USER CODE END PV */
