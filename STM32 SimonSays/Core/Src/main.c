@@ -22,6 +22,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <stdbool.h>
+#include <unistd.h>
 
 /* USER CODE END Includes */
 
@@ -32,7 +37,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define YELLOW 1;
+#define GREEN 2;
+#define RED 3;
+#define BLUE 4;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -45,9 +53,20 @@ I2C_HandleTypeDef hi2c1;
 
 I2S_HandleTypeDef hi2s3;
 
+RNG_HandleTypeDef hrng;
+
 SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
+static int sequenceNum = 0; //the number sequence the player is on
+
+
+int moves[10]; //the computer's array of numbers
+int playerMoves[10]; //the player's answer of numbers
+int *arrayPtr = moves; //pointer to computer's numbers
+int *playerPtr = playerMoves; //pointer to player's numbers
+int numOfSequences = 5;
+
 
 /* USER CODE END PV */
 
@@ -57,6 +76,7 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2S3_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_RNG_Init(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
@@ -66,6 +86,121 @@ void MX_USB_HOST_Process(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+// adds a number to Computer's array
+void addSequence(int *arrayPtr) {
+	if (sequenceNum < 10) {
+		uint32_t r;
+		HAL_RNG_GenerateRandomNumber(&hrng, &r);
+		*(arrayPtr + sequenceNum) = (r % 4) + 1;
+		sequenceNum++;
+	}
+}
+
+//displays computer's array on user LEDS
+void displaySequence(int *arrayPtr) {
+	for(int i = 0; i < sequenceNum; i++) {
+		if(*(arrayPtr + i) == 1) {
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
+			HAL_Delay(500);
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+		}
+		else if(*(arrayPtr + i) == 2) {
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
+			HAL_Delay(500);
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
+		}
+		else if(*(arrayPtr + i) == 2) {
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
+			HAL_Delay(500);
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+		}
+		else {
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
+			HAL_Delay(500);
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
+		}
+		HAL_Delay(100);
+	}
+}
+
+// adds the input number from player to player's array
+void playerMove(int *playerPtr) {
+	for(int i = 0; i < sequenceNum; i++) {
+		while(1) {
+			if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2) == GPIO_PIN_RESET) {
+				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
+				HAL_Delay(250);
+				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
+				playerPtr[i] = 4;
+				break;
+			}
+			else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_4) == GPIO_PIN_RESET) {
+				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
+				HAL_Delay(250);
+				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
+				playerPtr[i] = 3;
+				break;
+			}
+			else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_5) == GPIO_PIN_RESET) {
+				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
+				HAL_Delay(250);
+				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
+				playerPtr[i] = 2;
+				break;
+			}
+			else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_6) == GPIO_PIN_RESET) {
+				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
+				HAL_Delay(250);
+				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
+				playerPtr[i] = 1;
+				break;
+			}
+		}
+		HAL_Delay(350); //Small delay to reduce CPU usage
+	}
+}
+ //checks player array and computer array
+int checkPlayer(int *arrayPtr, int *playerPtr) {
+	for(int i = 0; i < sequenceNum; i++) {
+		if(arrayPtr[i] != playerPtr[i]) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+void Win() {
+	for(int i = 0; i < 21; i++) {
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
+		HAL_Delay(100);
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
+		HAL_Delay(100);
+
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
+		HAL_Delay(100);
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
+		HAL_Delay(100);
+
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
+		HAL_Delay(100);
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
+		HAL_Delay(100);
+
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
+		HAL_Delay(100);
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
+		HAL_Delay(100);
+	}
+}
+
+void Lose() {
+	for(int i = 0; i < 21; i++) {
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
+	    HAL_Delay(100);
+	    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
+	    HAL_Delay(100);
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -101,6 +236,7 @@ int main(void)
   MX_I2S3_Init();
   MX_SPI1_Init();
   MX_USB_HOST_Init();
+  MX_RNG_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -109,11 +245,25 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  while(sequenceNum < numOfSequences) {
+		  addSequence(arrayPtr);
+		  displaySequence(arrayPtr);
+		  playerMove(playerPtr);
+		  HAL_Delay(500);
+		  if (checkPlayer(arrayPtr, playerPtr) == 0) {
+			  Lose();
+			  return 0;
+		  }
+	  }
+	  Win();
+	  return 1;
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
   }
+
+
   /* USER CODE END 3 */
 }
 
@@ -227,6 +377,32 @@ static void MX_I2S3_Init(void)
   /* USER CODE BEGIN I2S3_Init 2 */
 
   /* USER CODE END I2S3_Init 2 */
+
+}
+
+/**
+  * @brief RNG Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RNG_Init(void)
+{
+
+  /* USER CODE BEGIN RNG_Init 0 */
+
+  /* USER CODE END RNG_Init 0 */
+
+  /* USER CODE BEGIN RNG_Init 1 */
+
+  /* USER CODE END RNG_Init 1 */
+  hrng.Instance = RNG;
+  if (HAL_RNG_Init(&hrng) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RNG_Init 2 */
+
+  /* USER CODE END RNG_Init 2 */
 
 }
 
