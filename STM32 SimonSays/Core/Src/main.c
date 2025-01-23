@@ -89,9 +89,9 @@ void MX_USB_HOST_Process(void);
  */
 void addSequence(int *arrayPtr) {
 	if (sequenceNum < 10) {
-		uint32_t r;
-		HAL_RNG_GenerateRandomNumber(&hrng, &r);
-		*(arrayPtr + sequenceNum) = (r % 4) + 1;
+		uint32_t randomNum;
+		HAL_RNG_GenerateRandomNumber(&hrng, &randomNum);
+		*(arrayPtr + sequenceNum) = (randomNum % 4) + 1;
 		sequenceNum++;
 	}
 }
