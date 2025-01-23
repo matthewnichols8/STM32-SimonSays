@@ -160,7 +160,7 @@ void playerMove(int *playerPtr) {
 				break;
 			}
 		}
-		HAL_Delay(50); //Small delay to reduce CPU usage
+		HAL_Delay(20); //Small delay to reduce CPU usage
 	}
 }
 
@@ -262,8 +262,8 @@ int main(void)
 		  addSequence(arrayPtr);
 		  displaySequence(arrayPtr);
 		  playerMove(playerPtr);
-		  HAL_Delay(500);
-		  if (checkPlayer(arrayPtr, playerPtr) == 0) {
+		  //HAL_Delay(500);
+		  if(checkPlayer(arrayPtr, playerPtr) == 0) {
 			  Lose();
 			  return 0;
 		  }
