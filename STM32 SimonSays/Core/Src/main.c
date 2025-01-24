@@ -56,14 +56,14 @@ RNG_HandleTypeDef hrng;
 SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
-static int sequenceNum = 0; //the number sequence the player is on
+static int sequenceNum = 0; //the current sequence number the player is on
 
 
-int moves[10]; //the computer's array of numbers
-int playerMoves[10]; //the player's answer of numbers
-int *arrayPtr = moves; //pointer to computer's numbers
-int *playerPtr = playerMoves; //pointer to player's numbers
-const int numOfSequences = 8;
+int moves[10]; // the computer's array of sequences
+int playerMoves[10]; // the player's array of sequences
+int *arrayPtr = moves; // pointer to computer's sequences
+int *playerPtr = playerMoves; // pointer to player's sequences
+const int numOfSequences = 8; // number of sequences required to win the game
 
 
 /* USER CODE END PV */
@@ -100,18 +100,18 @@ void addSequence(int *arrayPtr) {
  *
  */
 void displaySequence(int *arrayPtr) {
-	for(int i = 0; i < sequenceNum; i++) {
-		if(*(arrayPtr + i) == 1) {
+	for (int i = 0; i < sequenceNum; i++) {
+		if (*(arrayPtr + i) == 1) {
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
 			HAL_Delay(500);
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
 		}
-		else if(*(arrayPtr + i) == 2) {
+		else if (*(arrayPtr + i) == 2) {
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
 			HAL_Delay(500);
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
 		}
-		else if(*(arrayPtr + i) == 3) {
+		else if (*(arrayPtr + i) == 3) {
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
 			HAL_Delay(500);
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
@@ -126,35 +126,36 @@ void displaySequence(int *arrayPtr) {
 }
 
 /* Adds the input number from Player to Player's Array of Sequences
+ * For each number up to sequenceNum, waits for a pin reading
  *
  */
 void playerMove(int *playerPtr) {
-	for(int i = 0; i < sequenceNum; i++) {
+	for (int i = 0; i < sequenceNum; i++) {
 		while(1) {
-			if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2) == GPIO_PIN_RESET) {
+			if (HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2) == GPIO_PIN_RESET) {
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
-				HAL_Delay(250);
+				HAL_Delay(100);
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
 				playerPtr[i] = 4;
 				break;
 			}
-			else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_4) == GPIO_PIN_RESET) {
+			else if (HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_4) == GPIO_PIN_RESET) {
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
-				HAL_Delay(250);
+				HAL_Delay(100);
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
 				playerPtr[i] = 3;
 				break;
 			}
-			else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_5) == GPIO_PIN_RESET) {
+			else if (HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_5) == GPIO_PIN_RESET) {
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
-				HAL_Delay(250);
+				HAL_Delay(100);
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
 				playerPtr[i] = 2;
 				break;
 			}
-			else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_6) == GPIO_PIN_RESET) {
+			else if (HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_6) == GPIO_PIN_RESET) {
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
-				HAL_Delay(250);
+				HAL_Delay(100);
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
 				playerPtr[i] = 1;
 				break;
@@ -168,8 +169,8 @@ void playerMove(int *playerPtr) {
  *
  */
 int checkPlayer(int *arrayPtr, int *playerPtr) {
-	for(int i = 0; i < sequenceNum; i++) {
-		if(arrayPtr[i] != playerPtr[i]) {
+	for (int i = 0; i < sequenceNum; i++) {
+		if (arrayPtr[i] != playerPtr[i]) {
 			return 0;
 		}
 	}
@@ -180,22 +181,26 @@ int checkPlayer(int *arrayPtr, int *playerPtr) {
  *
  */
 void Win() {
-	for(int i = 0; i < 21; i++) {
+	for (int i = 0; i < 21; i++) {
+		// Toggle BLUE LED
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
 		HAL_Delay(100);
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
 		HAL_Delay(100);
 
+		// Toggle GREEN LED
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
 		HAL_Delay(100);
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
 		HAL_Delay(100);
 
+		// Toggle YELLOW LED
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
 		HAL_Delay(100);
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
 		HAL_Delay(100);
 
+		// Toggle RED LED
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
 		HAL_Delay(100);
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
@@ -207,7 +212,7 @@ void Win() {
  *
  */
 void Lose() {
-	for(int i = 0; i < 21; i++) {
+	for (int i = 0; i < 21; i++) {
 		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
 	    HAL_Delay(100);
 	    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
