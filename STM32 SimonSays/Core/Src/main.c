@@ -93,7 +93,7 @@ void addSequence(int *arrayPtr) {
 	}
 }
 
-/* Displays Computer's Array of Sequences to ONBOARD-LEDS
+/* Displays Computer's Array of Sequences to ONBOARD-LEDS.
  *
  */
 void displaySequence(int *arrayPtr) {
@@ -122,8 +122,8 @@ void displaySequence(int *arrayPtr) {
 	}
 }
 
-/* Adds the input number from Player to Player's Array of Sequences
- * For each number up to sequenceNum, waits for a pin reading
+/* Adds the input number from Player to Player's Array of Sequences.
+ * For each number up to sequenceNum, waits for a pin reading from external buttons.
  *
  */
 void playerMove(int *playerPtr) {
@@ -162,7 +162,7 @@ void playerMove(int *playerPtr) {
 	}
 }
 
-/* Checks Player Array and Computer Array have same values
+/* Checks Player Array and Computer Array have same values.
  *
  */
 int checkPlayer(int *arrayPtr, int *playerPtr) {
@@ -174,7 +174,7 @@ int checkPlayer(int *arrayPtr, int *playerPtr) {
 	return 1;
 }
 
-/* Displays the winning sequence --> All colors flashing
+/* Displays the winning sequence --> All colors flashing.
  *
  */
 void Win() {
@@ -205,7 +205,7 @@ void Win() {
 	}
 }
 
-/* Displays the Losing Sequence --> Red LED Flashing
+/* Displays the Losing Sequence --> Red LED Flashing.
  *
  */
 void Lose() {
