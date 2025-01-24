@@ -174,7 +174,7 @@ int checkPlayer(int *arrayPtr, int *playerPtr) {
 	return 1;
 }
 
-/*Displays the winning sequence --> All colors flashing
+/* Displays the winning sequence --> All colors flashing
  *
  */
 void Win() {
