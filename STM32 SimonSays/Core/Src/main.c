@@ -205,7 +205,7 @@ void Win() {
 	}
 }
 
-/* Displays the Losing Sequence --> Red Flashing
+/* Displays the Losing Sequence --> Red LED Flashing
  *
  */
 void Lose() {
