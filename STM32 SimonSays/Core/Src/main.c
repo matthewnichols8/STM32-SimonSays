@@ -260,12 +260,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  while(sequenceNum < numOfSequences) {
+	  while (sequenceNum < numOfSequences) {
 		  addSequence(arrayPtr);
 		  displaySequence(arrayPtr);
 		  playerMove(playerPtr);
 		  //HAL_Delay(500);
-		  if(checkPlayer(arrayPtr, playerPtr) == 0) {
+		  if (checkPlayer(arrayPtr, playerPtr) == 0) {
 			  Lose();
 			  return 0;
 		  }
